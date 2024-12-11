@@ -1,0 +1,9 @@
+    <d class="content">
+    <input type="button" onclick="myfunoff()" id="off" value="OFF">
+#off{
+        background-color: red
+    }
+    input [type="button"]:active{
+        transform: scale(0.9);
+    }
+    
