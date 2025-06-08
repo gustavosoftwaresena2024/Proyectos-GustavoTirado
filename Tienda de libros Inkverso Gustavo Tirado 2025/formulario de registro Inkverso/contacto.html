@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto Inkverso</title>
+    <link rel="stylesheet" href="Contacto.css">
+    <link rel="icon" href="libroicono.jpg" type="image/png">
+</head>
+<body>
+    <form>
+        <h2>Contacto Inkverso TIENDA DE LIBROS</h2>
+        
+        <fieldset>
+            <legend>INFORMACIÓN BÁSICA</legend><!--SIMPLE INPUTS-->
+        <div class="form_input">
+            <label>Nombre completo
+            <input type="text" placeholder="Gustavo Adolfo" id="nombre">
+            </label>
+            </div>
+        
+            <div class="form_input">
+            <label>Email
+        <input type="email" placeholder="gustavo2025@producteso.edu.co" id="email">
+            </label>
+        </div>
+        <div class="form_input">
+            <label>Asunto
+        <input type="text" placeholder="El asunto de tu mensaje">
+            </label>
+        </div>
+        </fieldset>
+
+      <!--SELECT & OPTION-->  
+         <div class="form_input" >
+    <label>Tipo de usuario
+<select name="type-of-user">
+    <option value="user1">Administrador</option>
+    <option value="user2">Cliente</option>
+    <option value="user3">Vendedor</option>
+    <option value="user4">Otro</option>
+</select>
+    </label>
+         </div>
+
+    <!--DATALIST & OPTION-->
+          <div class="form_input" >
+    <label>Referido
+    <input list="referente" name="ree">
+    <datalist id="referente" name="type-of-user">
+    <option value="Administrador">Persona o equipo responsable de gestionar el sitio web.</option>
+    <option value= "Cliente">Persona u organización que adquiere o busca adquirir libros para su uso personal, educativo, profesional o de entretenimiento.</option>
+    <option value="Vendedor">Se dedica a la comercialización y venta de libros.</option>
+    <option value="Otro">Autores, críticos, editores, reseñistas, traductores.</option>
+<datalist>
+    </label>
+         </div>
+
+<!--TEXTAREA-->
+        <div class="form_input">
+        <label>Mensaje
+        <textarea rows="8"  placeholder="Envía tu mensaje..." id="mensaje"></textarea>
+        </label>
+     </div> 
+     <div class="buttom__enviar">
+        
+      <button   type="enviar" class="enviar">Enviar</button> 
+     </div> 
+     <div class="acepto__item">
+     <div class="form_input">
+        
+        <label>Acepto los <a href="terms.html" target="_blank">términos y condiciones</a>
+            <input type="checkbox" class="checkbox">
+        </label>
+       </div>
+     </div>
+    </form>
+
+    <footer class="footer">
+        <p>© 2025 Tienda de libros Inkverso.Todos los derechos reservados. Gustavo Tirado.</p>
+    </footer>
+</body>
+</html>

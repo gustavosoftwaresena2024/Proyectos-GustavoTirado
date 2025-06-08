@@ -1,0 +1,65 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+    color: #eee;
+    background-color: #222;
+}
+
+.formulario__item {
+    align-items: center;
+    text-align: center;
+}
+
+.acepto__item {
+    align-items: center;
+    text-align: center;
+}
+
+.buttom__enviar {
+    margin:10px;
+    padding: 10px;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 60px;
+}
+.footer {
+    color: #fff;
+}
+form{
+    background-color: transparent;
+    padding: 10px 10px;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0px 0px 55px #fff2;
+    margin-top: 50px;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+input, textarea, select {
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    border: none;
+    border: 1px solid #666;
+    box-shadow: 0px 0px 15px #0003;
+    background-color: transparent;
+    border-radius: 4px;
+    color: #ddd;
+    margin: 6px 0;
+}
+
+fieldset {
+    margin: 10px 0;
+    border: 1px solid #ddd6;
+    border-radius: 5px;
+}
+
+legend {
+    padding: 0 6px;
+   }
+
+a {
+    color: #69f;
+    text-decoration: none;
+}
