@@ -1,10 +1,48 @@
 body {
     margin: 0;
+    padding: 0;
     font-family: sans-serif;
     box-sizing: border-box;
     background-color: #0bb;
     color: #fff;
+    line-height: 1.6;
 }
+
+
+ p, h2 {
+    pad
+    height: 60px;
+    margin: auto;
+    color: #ddd;
+}
+
+.buttom-carrito {
+    width: 150px;
+    height: 50%;
+    padding: 20px 20px;
+    margin: 20px 20px;
+    background-color: #48e;
+    color: #dddf;
+    border: none;
+    border-radius: 60px;
+    cursor: pointer;
+    font-size: 0.4em;
+}
+
+.imagen-1, .imagen-2, .imagen-3, .imagen-4 {
+width: 150px; 
+height: auto; 
+display: block; 
+margin-bottom: 10px;
+}
+
+.imagen-carrito {
+    width: 40%; 
+    max-width: 200px; 
+    display: block; 
+    margin-bottom: 10px;
+}
+
 
 body, div, header, nav, ul, h1, h2, p, img {
     box-sizing: border-box;
