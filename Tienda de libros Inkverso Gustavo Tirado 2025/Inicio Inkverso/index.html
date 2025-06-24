@@ -8,15 +8,18 @@
     <link rel="icon" href="librofondo.gif" type="gif">
 </head>
 <body>
+
+<script  src="codigo.js"></script>
+
     <header class="header">
       <div class="header__overlay">
 
       </div>
    <div class="header__item-container">
       <img src="librofondo.gif" class="header__img">
-      <h1>INKVERSO, TIENDA DE LIBROS</h1>
+      <h1>INKVERSO, TIENDA DE LIBROS</h1> <br><br>
       <P>
-¡Bienvenidos a Inkverso! <p>
+¡Bienvenidos a Inkverso, tienda de libros! <p>
 Sumérgete en un universo de historias y conocimiento en Inkverso, tu nueva tienda de libros online. Aquí encontrarás desde los clásicos que te han marcado, hasta las últimas novedades que no querrás soltar. En Inkverso, cada página te espera para transportarte a nuevas aventuras. ¿Estás listo para descubrir tu próxima lectura favorita?.
          
       </P>
@@ -38,75 +41,55 @@ Sumérgete en un universo de historias y conocimiento en Inkverso, tu nueva tien
  </nav>
  <main>
   <div class="producto">
-    <h2>El Bosque Mágico</h2>
+    <h3><b style="color: brown;">El Bosque</b> Mágico</h3>
 <img class="imagen-1" src="elbosquemagico.jpg" alt="Imagen Producto 1">
-        <p>Precio: $25.000</p>
+        <p class="precio__item">Precio: $25.000</p>
         <button class="buttom-carrito" onclick="agregarAlCarrito('El Bosque Mágico', 25000)">Agregar al carrito</button>
     </div>
     <div class="producto"> 
-        <h2>Belleza Oscura</h2>
+        <h3><b style="color: brown;">Belleza</b> Oscura</h3>
         <img class="imagen-2" src="bellezaoscura.jpg" alt="Imagen Producto 2">
-        <p>Precio: $32.000</p>
+        <p class="precio__item">Precio: $32.000</p>
         <button class="buttom-carrito" onclick="agregarAlCarrito('Belleza Oscura', 32000)">Agregar al carrito</button>
     </div>
     <div class="producto">
-        <h2>Las Vidas dentro...</h2>
+        <h3><b style="color: brown;">Las Vidas</b> dentro<br> de tu cabeza </h3><br>
         <img class="imagen-3" src="lasvidasdentrodetucabeza.png" alt="Imagen Producto 3">
-        <p>Precio: $27.000</p>
+        <p class="precio__item">Precio: $27.000</p>
         <button class="buttom-carrito" onclick="agregarAlCarrito('Las Vidas dentro de tu Cabeza', 27000)">Agregar al carrito</button>
     </div>
     <div class="producto"> 
-        <h2>Nuestra Señora De Paris</h2>
+        <h3><b style="color: brown;">Nuestra</b> Señora <br>De Paris</h3>
         <img class="imagen-4" src="nuestraseñoradeparis.jpg" alt="Imagen Producto 4">
-        <p>Precio: $35.000</p>
+        <p class="precio__item">Precio: $35.000</p>
         <button class="buttom-carrito" onclick="agregarAlCarrito('Nuestra Señora de Paris', 35000)">Agregar al carrito</button>
     </div>
      <div class="producto">
-        <h2>Mamá Nos Dijo Adiós</h2>
+        <h3><b style="color: brown;">Mamá Nos</b> Dijo Adiós</h3>
         <img class="imagen-4" src="mamánosdijoadios.jpg" alt="Imagen Producto 4">
-        <p>Precio: $40.000</p>
+        <p class="precio__item">Precio: $40.000</p>
         <button class="buttom-carrito" onclick="agregarAlCarrito('Mamá Nos Dijo Adiós', 40000)">Agregar al carrito</button>
     </div>
      <div class="producto">
-        <h2>Libro Romeo Y Julieta</h2>
+        <h3><b style="color: brown;">Romeo</b> Y Julieta</h3>
         <img class="imagen-4" src="romeoyjulieta.jpg" alt="Imagen Producto 4">
-        <p>Precio: $22.000</p>
+        <p class="precio__item">Precio: $22.000</p>
         <button class="buttom-carrito" onclick="agregarAlCarrito('Romeo Y Julieta', 22000)">Agregar al carrito</button>
     </div>
     <div class="carrito">
-        <h2>Carrito de Compras</h2>
+        <h4 class="precio__item">Carrito de Compras</h4>
         <img class="imagen-carrito" src="Carrodecompras.png">
         <ul id="lista-carrito"></ul>
         <p><strong>Total:</strong> $<span id="total">0</span></p>
+        
         <button class="buttom-carrito" onclick="pagarCompra()">Pagar Compra</button>
     </div>
     
-    <script>
-        const carrito = [];
-        function agregarAlCarrito(producto, precio) {
-            carrito.push({ producto, precio });
-            actualizarCarrito();
-        }
-        function actualizarCarrito() {
-            const lista = document.getElementById('lista-carrito');
-            const total = document.getElementById('total');
-            lista.innerHTML = '';
-            let suma = 0;
-            carrito.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = `${item.producto} - $${item.precio}`;
-                lista.appendChild(li);
-                suma += item.precio;
-            });
-            total.textContent = suma;
-        }
-        function pagarCompra() {
-            alert('Gracias por tu compra. Procesaremos tu pedido pronto.');
-        }
-    </script>
- </main>
+ </main><br>
+ <div>
  <footer>
-        <p>© 2025 Tienda de libros Inkverso.Todos los derechos reservados. Gustavo Tirado.</p>
+ <p class="footer__item">© 2025 Tienda de libros <b style="color:blanchedalmond;">Inkverso.</b>Todos los derechos reservados.<br><b>Gustavo Tirado.</b><br></p>
     </footer>
+ </div>
 </body>
 </html>

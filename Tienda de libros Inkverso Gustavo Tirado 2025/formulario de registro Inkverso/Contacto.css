@@ -1,8 +1,203 @@
 body {
     margin: 0;
+    padding: 0;
     font-family: sans-serif;
+    box-sizing: border-box;
+    background-color: #222;
+    color: #eee;
+    line-height: 1.4;
+}
+ p, h2 {
+    pad
+height: 60px;
+    margin: auto;
     color: #ddd;
-    background: linear-gradient(to bottom,#333,#000);
+}
+body, div, header, nav, ul, h1, h2, p, img {
+    box-sizing: border-box;
+}
+
+.header {
+    min-height: 100vh;
+    box-sizing: border-box;
+    background-image: url("librocastillo.gif");
+    block-size: cover;
+    display: flex;
+}
+.header__overlay {
+    min-height: 100vh;
+    width: 100%;
+    background-color: #0006;
+    position:absolute;
+}
+.header__item-container {
+    position: relative;
+    z-index: 10;
+    margin: auto;
+    text-align: center;
+    max-width: 700px;
+}
+.header__item-container p {
+    text-wrap: pretty;
+}
+
+
+.header__img {
+    min-width: 70px;
+    max-width: 40%;
+    border-radius: 50%;
+    border: 6px solid #ddd;
+    margin: 20px;
+}
+
+
+
+main {
+    max-width: 600px;
+    margin: auto;
+    font-size: 30px;
+    text-wrap: pri;
+}
+
+.nav {
+    background-color: #000f;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+   padding: 6px 20px;
+   position: sticky;
+   top: 0;
+   margin-bottom: 10px;
+   box-shadow: 0 0 25px #0006 ;
+}
+
+.nav_ul {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+}
+
+
+.nav_item {
+    list-style: none;
+}
+
+.nav__ul-container {
+    flex-grow: 4;
+}
+
+.nav__logo-container, .nav__ul-container {
+    flex-grow: 1;
+    text-align: center;
+}
+.nav-link {
+    color: #0bb;
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 10px;
+    border-radius: 0%;
+    transition: background-color 0.3s, border-radius 0.2s, outline 0.2s, outline-offset 0.2s;
+    margin: 2px;
+    outline: 0;
+    outline-offset: 0;
+}
+.nav-link:hover {
+    background-color:#0bb4;
+    border-radius: 20px;
+    outline: 2px solid #0bb6;
+    outline-offset: -7px;
+    
+}
+.nav_logo {
+    width: 70px;
+}
+h1,h2,.legend_item {
+    color: #ddd;
+    text-align: center;
+    align-items: center;
+}
+
+.header {
+    min-height: 100vh;
+    box-sizing: border-box;
+    background-image: url("librocastillo.gif");
+    block-size: cover;
+    display: flex;
+}
+
+
+.nav {
+    background-color: #000f;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+   padding: 6px 20px;
+   position: sticky;
+   top: 0;
+   margin-bottom: 10px;
+   box-shadow: 0 0 25px #0006 ;
+}
+
+.nav_ul {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+}
+
+
+.nav_item {
+    list-style: none;
+}
+
+.nav__ul-container {
+    flex-grow: 4;
+}
+
+.nav__logo-container, .nav__ul-container {
+    flex-grow: 1;
+    text-align: center;
+}
+.nav-link {
+    color: #0bb;
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 10px;
+    border-radius: 0%;
+    transition: background-color 0.3s, border-radius 0.2s, outline 0.2s, outline-offset 0.2s;
+    margin: 2px;
+    outline: 0;
+    outline-offset: 0;
+}
+.nav-link:hover {
+    background-color:#0bb4;
+    border-radius: 20px;
+    outline: 2px solid #0bb6;
+    outline-offset: -7px;
+    
+}
+.nav_logo {
+    width: 70px;
+}
+h1,h2,.legend_item {
+    color: #ddd;
+    text-align: center;
+    align-items: center;
+}
+
+.link--Acceder {
+    background-color: #0bb;
+    color: #ddd;
+    border-radius: 20px;
+    padding: 8px 24px;
+    margin-left: 6px;
+}
+.link--Acceder:hover {
+    background-color: #19ff;
+    outline: none;
 }
 
 .acepto__item {
@@ -39,6 +234,7 @@ form {
     margin-bottom: 40px;
 }
 .form_input {
+    color:#ddd;
     padding: 6px 20px ;
     align-items: center;
  
@@ -87,10 +283,16 @@ fieldset {
 
 legend {
     padding: 0 6px;
-    color: #777;
+    color: #ddd;
 }
 
 a {
     color: #69f;
     text-decoration: none;
+}
+.footer__item {
+font-size: 20px;
+    color: #eee;
+    text-align: center;
+    
 }

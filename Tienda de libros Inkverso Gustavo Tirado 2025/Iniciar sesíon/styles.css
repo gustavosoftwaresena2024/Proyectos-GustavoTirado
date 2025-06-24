@@ -1,12 +1,82 @@
 body {
     margin: 0;
+    font-family: sans-serif;
+     color: #eee;
     background-color: #222;
+    
+    
 }
+.nav {
+    background-color: #000f;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+   padding: 6px 20px;
+   position: sticky;
+   top: 0;
+   margin-bottom: 10px;
+   box-shadow: 0 0 25px #0006 ;
+}
+
+.nav_ul {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+}
+
+
+.nav_item {
+    list-style: none;
+}
+
+.nav__ul-container {
+    flex-grow: 4;
+}
+
+.nav__logo-container, .nav__ul-container {
+    flex-grow: 1;
+    text-align: center;
+}
+.nav-link {
+    color: #0bb;
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 10px;
+    border-radius: 0%;
+    transition: background-color 0.3s, border-radius 0.2s, outline 0.2s, outline-offset 0.2s;
+    margin: 2px;
+    outline: 0;
+    outline-offset: 0;
+}
+.nav-link:hover {
+    background-color:#0bb4;
+    border-radius: 20px;
+    outline: 2px solid #0bb6;
+    outline-offset: -7px;
+    
+}
+.nav_logo {
+    width: 70px;
+}
+
 
 h1 {
     color: #fff;
     text-align: center;
     align-items: center;
+}
+.link--Acceder {
+    background-color: #0bb;
+    color: #ddd;
+    border-radius: 20px;
+    padding: 8px 24px;
+    margin-left: 6px;
+}
+.link--Acceder:hover {
+    background-color: #19ff;
+    outline: none;
 }
 
 .footer {
@@ -93,7 +163,7 @@ h1 {
 .btn-2:hover::after {
     opacity: 1;
     top:-9px;
-    width: 50%;
+    width: 50%;4
 }
 
 @keyframes parpadear {
@@ -193,5 +263,13 @@ h1 {
 @media (prefers-reduced-motion: reduce) {
     .btn .btn::before, .btn::after {
         animation: none;
+        
     }
+}
+
+.footer__item {
+font-size: 20px;
+    color: #eee;
+    text-align: center;
+    
 }
