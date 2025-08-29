@@ -1,0 +1,1 @@
+estudiantesSELECT * FROM `base de datos producteso`.profesores;
