@@ -1,0 +1,164 @@
+/* =================== */
+/* MODO CLARO (por defecto) */
+/* =================== */
+body {
+    background: linear-gradient(135deg, #007bff, #6610f2);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.4s ease-in-out;
+}
+
+.container {
+    max-width: 420px;
+}
+
+.card {
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    overflow: hidden;
+    animation: fadeIn 0.6s ease-in-out;
+    background: #fff;
+    transition: background 0.4s, color 0.4s;
+}
+
+.card-header {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 6px rgba(0,123,255,0.5);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #28a745, #218838);
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    padding: 10px;
+    transition: transform 0.2s, background 0.3s;
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #218838, #1e7e34);
+}
+
+.alert {
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+/* Animación */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =================== */
+/* MODO OSCURO */
+/* =================== */
+body.dark-mode {
+    background: linear-gradient(135deg, #121212, #1f1f1f);
+    color: #e0e0e0;
+}
+
+body.dark-mode .card {
+    background: #1e1e1e;
+    color: #e0e0e0;
+    box-shadow: 0 6px 18px rgba(255,255,255,0.1);
+}
+
+body.dark-mode .card-header {
+    background-color: #222;
+    color: #f1f1f1;
+}
+
+body.dark-mode .form-control {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    color: #e0e0e0;
+}
+
+body.dark-mode .form-control:focus {
+    border-color: #66bb6a;
+    box-shadow: 0 0 6px rgba(102,187,106,0.7);
+}
+
+body.dark-mode .btn-primary {
+    background: linear-gradient(135deg, #66bb6a, #43a047);
+}
+
+body.dark-mode .btn-primary:hover {
+    background: linear-gradient(135deg, #43a047, #2e7d32);
+}
+
+body.dark-mode .alert {
+    background: #b71c1c;
+    color: #fff;
+}
+/* Botón modo oscuro */
+#toggleDark {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    font-size: 18px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+}
+
+#toggleDark:hover {
+    background: rgba(255,255,255,0.2);
+}
+/* Inputs modernos */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    margin-bottom: 12px;
+    font-size: 14px;
+    background: #1f2937;
+    color: #fff;
+}
+
+input::placeholder {
+    color: #9ca3af;
+}
+
+/* Botón verde */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #22c55e;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background: #16a34a;
+    transform: translateY(-2px);
+}
