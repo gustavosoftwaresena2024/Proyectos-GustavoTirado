@@ -1,4 +1,23 @@
-<?php include("../template/cabecera.php"); ?>
+<?php include_once("../template/cabecera.php"); ?>
+<?php 
+
+include("../config/bd.php"); // conexión PDO (el bd.php que ya usas)
+
+
+// Si no existe la sesión, redirige al login
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../sitioweb/administrador/login.php?mensaje=expirado");
+    exit;
+}
+
+// Evitar volver con el botón atrás
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0");
+?>
+
+
 <?php 
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
@@ -104,7 +123,6 @@ $listaLibros = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
-
 <div class="col-md-5">
     <div class="card">
         <div class="card-header">Datos del producto</div>
@@ -183,15 +201,33 @@ $listaLibros = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                     </form>
                 </td>
                 <td>
-                    <!-- Botón Carrito -->
-                    <form method="post" action="carrito.php" style="display:inline-block;">
-                        <input type="hidden" name="idProducto" value="<?php echo $libro['id']; ?>"/>
-                        <input type="hidden" name="nombre" value="<?php echo $libro['nombre']; ?>"/>
-                        <input type="hidden" name="precio" value="<?php echo $libro['precio']; ?>"/>
-                        <button type="submit" name="accion" value="AgregarCarrito" class="btn btn-success">
-                            🛒 Agregar
-                        </button>
-                    </form>
+    <!-- Botón Agregar al carrito -->
+<form method="post" action="../template/carrito.php" style="display:inline-block;">
+    <input type="hidden" name="idProducto" value="<?php echo $libro['id']; ?>"/>
+    <input type="hidden" name="nombre" value="<?php echo htmlspecialchars($libro['nombre']); ?>"/>
+    <input type="hidden" name="precio" value="<?php echo $libro['precio']; ?>"/>
+    <input type="hidden" name="imagen" value="<?php echo htmlspecialchars($libro['imagen']); ?>"/>
+
+    <!-- Nuevo campo para cantidad -->
+    <input type="number" name="cantidad" value="1" min="1" class="form-control mb-2" style="width:80px; display:inline-block;"/>
+
+    <button type="submit" name="accion" value="Agregar" class="btn btn-success">
+        🛒 Agregar
+    </button>
+</form>
+
+</td>
+
+                    </div>
+                </div>
+            </div>
+    </div>
+<td>
+    <div class="mt-4 text-center">
+        <a href="../template/carrito.php" class="btn btn-primary">🛍 Ver carrito</a>
+    </div>
+</div>
+</td>
                 </td>
                 </td>
             </tr>

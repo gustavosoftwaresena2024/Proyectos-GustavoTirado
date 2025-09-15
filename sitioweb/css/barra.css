@@ -1,0 +1,78 @@
+/* 🌞 Modo Claro (por defecto) */
+body {
+    background: #f4f6f9;
+    color: #222;
+    transition: background 0.3s, color 0.3s;
+}
+
+/* 🌙 Modo Oscuro */
+body.dark-mode {
+    background: #121212;
+    color: #eee;
+}
+
+
+/* 🌙 Modo Oscuro del buscador */
+.dark-mode #form-busqueda {
+    background: #1e1e2f;
+    padding: 12px 18px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.6);
+    transition: all 0.3s ease-in-out;
+}
+
+.dark-mode #form-busqueda:hover {
+    box-shadow: 0px 6px 14px rgba(0,0,0,0.8);
+}
+
+/* 🔽 Select */
+.dark-mode #form-busqueda select {
+    background: #2a2a40;
+    color: #f5f5f5;
+    border: 2px solid #00c3ff;
+    border-radius: 8px;
+    padding: 6px 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.dark-mode #form-busqueda select:focus {
+    outline: none;
+    border-color: #00e1ff;
+    box-shadow: 0px 0px 8px rgba(0,227,255,0.5);
+}
+
+/* ✏️ Input */
+.dark-mode #form-busqueda input {
+    background: #2a2a40;
+    color: #f5f5f5;
+    border: 2px solid #00c3ff;
+    border-radius: 8px;
+    padding: 6px 12px;
+    transition: all 0.3s ease-in-out;
+}
+
+.dark-mode #form-busqueda input::placeholder {
+    color: #aaa;
+}
+
+.dark-mode #form-busqueda input:focus {
+    outline: none;
+    border-color: #00e1ff;
+    box-shadow: 0px 0px 8px rgba(0,227,255,0.5);
+}
+
+/* 🔘 Botón */
+.dark-mode #form-busqueda button {
+    background: #00c3ff;
+    color: #1e1e2f;
+    border-radius: 8px;
+    font-weight: bold;
+    padding: 6px 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+.dark-mode #form-busqueda button:hover {
+    background: #00e1ff;
+    transform: scale(1.05);
+}
+

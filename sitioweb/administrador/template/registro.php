@@ -1,140 +1,224 @@
 <?php
 session_start();
-include("../config/bd.php"); // conexión PDO (el bd.php que ya usas)
+include("../config/bd.php"); // conexión PDO
 
-// Evitar caché del navegador
+// Evitar caché
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 $mensaje = "";
 
-
-
 if ($_POST) {
-    $nombre = $_POST['nombre'] ?? '';
-    $correo = $_POST['correo'] ?? '';
-    $telefono = $_POST['telefono'] ?? '';
-    $contraseña = $_POST['contraseña'] ?? '';
+    $nombre      = $_POST['nombre'] ?? '';
+    $correo      = $_POST['correo'] ?? '';
+    $telefono    = $_POST['telefono'] ?? '';
+    $contraseña  = $_POST['contraseña'] ?? '';
+    $confirmar   = $_POST['confirmar_contraseña'] ?? '';
 
-    if ($nombre && $correo && $telefono && $contraseña) {
-        // Verificar si el correo ya existe
-        $check = $conexion->prepare("SELECT id FROM usuarios WHERE correo = :correo LIMIT 1");
-        $check->bindParam(':correo', $correo);
-        $check->execute();
-
-        if ($check->rowCount() > 0) {
-            $mensaje = "❌ Error: El correo ya está registrado. Intenta con otro.";
+    if ($nombre && $correo && $telefono && $contraseña && $confirmar) {
+        if ($contraseña !== $confirmar) {
+            $mensaje = "❌ Las contraseñas no coinciden.";
         } else {
-            // Encriptar contraseña
-            $hash = password_hash($contraseña, PASSWORD_BCRYPT);
+            // Verificar si el correo ya existe
+            $check = $conexion->prepare("SELECT id FROM usuarios WHERE correo = :correo LIMIT 1");
+            $check->bindParam(':correo', $correo);
+            $check->execute();
 
-            $sentenciaSQL = $conexion->prepare("INSERT INTO usuarios (nombre, correo, telefono, contraseña) 
-                                                VALUES (:nombre, :correo, :telefono, :password)");
-            $sentenciaSQL->bindParam(':nombre', $nombre);
-            $sentenciaSQL->bindParam(':correo', $correo);
-            $sentenciaSQL->bindParam(':telefono', $telefono);
-            $sentenciaSQL->bindParam(':password', $hash);
-            $sentenciaSQL->execute();
+            if ($check->rowCount() > 0) {
+                $mensaje = "❌ Error: El correo ya está registrado. Intenta con otro.";
+            } else {
+                // Encriptar contraseña
+                $hash = password_hash($contraseña, PASSWORD_BCRYPT);
 
-            $mensaje = "✅ Registro exitoso. Ahora puedes iniciar sesión.";
+                $sentenciaSQL = $conexion->prepare("INSERT INTO usuarios (nombre, correo, telefono, password) 
+                                                    VALUES (:nombre, :correo, :telefono, :password)");
+                $sentenciaSQL->bindParam(':nombre', $nombre);
+                $sentenciaSQL->bindParam(':correo', $correo);
+                $sentenciaSQL->bindParam(':telefono', $telefono);
+                $sentenciaSQL->bindParam(':password', $hash);
+                $sentenciaSQL->execute();
+
+                header("Location: login.php?registro=ok");
+                exit;
+            }
         }
     } else {
         $mensaje = "⚠️ Por favor completa todos los campos.";
     }
-    // Redirigir al login
-        header("Location: http://localhost/sitioweb/administrador/index.php");
-        exit;
 }
-
-
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>📝Registro Usuario</title>
-  
-  <link rel="stylesheet" href="../template/login.css"> <!-- mismo estilo que el login -->
-   <div class="card-header d-flex justify-content-between align-items-center">
-    <span>Registro de usuario</span>
-    <button type="button" id="toggleDark" class="btn btn-sm btn-outline-light">
-        🌙
-    </button>
-</div>
-
+  <title>📝 Registro Usuario</title>
+  <link rel="stylesheet" href="../seccion/css/bootstrap.min.css"> 
+  <link rel="stylesheet" href="../template/login.css"> 
+  <link rel="stylesheet" href="../template/barra.css"> 
 </head>
 <body>
-    
-    
+
+
 
 <div class="login-container">
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
 
-      <div class="card">
+      <div class="card shadow">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h1>📝 Registro Inkverso</h1>
-          <div></div>
-       <a href="login.php">  <button  class="btn btn-success btn-block">Iniciar Sesión</button></a> 
-            
+          <h2 class="mb-0">📝 Registro Inkverso</h2>
+          <!-- Botón modo oscuro -->
+<div class="container my-3 text-end">
+  <button id="toggle-dark" class="btn btn-dark">🌙 Modo Oscuro</button>
+</div>
+          <div>
+            <a href="http://localhost/sitioweb/" class="btn btn-outline-primary btn-sm">🏠 Inicio</a>
+            <a href="login.php" class="btn btn-success btn-sm">🔑 Iniciar Sesión</a>
+          </div>
         </div>
 
         <div class="card-body">
           <?php if ($mensaje) { ?>
             <div class="alert alert-info" role="alert">
-              <?php echo $mensaje; ?>
+              <?= $mensaje; ?>
             </div>
           <?php } ?>
-          
 
-          <form method="POST">
-
-            <div class="form-group">
-              <label>Nombre completo</label>
-              <input type="text" class="form-control" name="nombre" required>
+          <form method="POST" id="registroForm">
+            <div class="mb-3">
+              <label class="form-label">Nombre completo</label>
+              <input type="text" class="form-control form-control-lg" name="nombre" required>
             </div>
 
-            <div class="form-group">
-              <label>Correo electrónico</label>
-              <input type="email" class="form-control" name="correo" required>
+            <div class="mb-3">
+              <label class="form-label">Correo electrónico</label>
+              <input type="email" class="form-control form-control-lg" name="correo" required>
             </div>
 
-            <div class="form-group">
-              <label>Teléfono</label>
-              <input type="text" class="form-control" name="telefono" required>
+            <div class="mb-3">
+              <label class="form-label">Teléfono</label>
+              <input type="text" class="form-control form-control-lg" name="telefono" required>
             </div>
 
-            <div class="form-group">
-              <label>Contraseña</label>
-              <input type="password" class="form-control" name="contraseña" required>
+            <div class="mb-3">
+              <label class="form-label">Contraseña</label>
+              <input type="password" class="form-control form-control-lg" id="contraseña" name="contraseña" required>
+              <div class="progress mt-2">
+                <div id="fortalezaBar" class="progress-bar" role="progressbar" style="width: 0%">0%</div>
+              </div>
+              <small id="fortalezaMsg" class="form-text"></small>
             </div>
 
-            <button type="submit" class="btn btn-success btn-block">Registrarse</button>
+            <div class="mb-3">
+              <label class="form-label">Confirmar contraseña</label>
+              <input type="password" class="form-control form-control-lg" id="confirmar_contraseña" name="confirmar_contraseña" required>
+              <small id="mensajeError" class="text-danger d-none">❌ Las contraseñas no coinciden</small>
+              <small id="mensajeOk" class="text-success d-none">✅ Las contraseñas coinciden</small>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" id="btnRegistro" class="btn btn-success btn-lg" disabled>
+                Registrarse
+              </button>
+            </div>
           </form>
-          
         </div>
       </div>
 
     </div>
   </div>
 </div>
+
 <script>
-        // Script de cambio de modo día/noche
-     
-  const toggleBtn = document.getElementById("toggleDark");
-  const body = document.body;
+// === Validaciones JS ===
+const form = document.getElementById("registroForm");
+const pass1 = document.getElementById("contraseña");
+const pass2 = document.getElementById("confirmar_contraseña");
+const mensajeError = document.getElementById("mensajeError");
+const mensajeOk = document.getElementById("mensajeOk");
+const fortalezaMsg = document.getElementById("fortalezaMsg");
+const fortalezaBar = document.getElementById("fortalezaBar");
+const btnRegistro = document.getElementById("btnRegistro");
 
-  toggleBtn.addEventListener("click", () => {
-    body.classList.toggle("dark-mode");
+function validarPasswords() {
+  if (pass1.value === "" || pass2.value === "") {
+    mensajeError.classList.add("d-none");
+    mensajeOk.classList.add("d-none");
+    btnRegistro.disabled = true;
+  } else if (pass1.value === pass2.value) {
+    mensajeError.classList.add("d-none");
+    mensajeOk.classList.remove("d-none");
+    btnRegistro.disabled = false;
+  } else {
+    mensajeError.classList.remove("d-none");
+    mensajeOk.classList.add("d-none");
+    btnRegistro.disabled = true;
+  }
+}
 
-    if (body.classList.contains("dark-mode")) {
-      toggleBtn.textContent = "☀️"; // cambia a sol
-    } else {
-      toggleBtn.textContent = "🌙"; // vuelve a luna
-    }
-  });
+function evaluarFortaleza(password) {
+  let fortaleza = 0;
+  if (password.length >= 6) fortaleza++;
+  if (/[A-Z]/.test(password)) fortaleza++;
+  if (/[0-9]/.test(password)) fortaleza++;
+  if (/[@$!%*?&#]/.test(password)) fortaleza++;
+
+  let porcentaje = (fortaleza / 4) * 100;
+  fortalezaBar.style.width = porcentaje + "%";
+  fortalezaBar.textContent = Math.round(porcentaje) + "%";
+
+  if (fortaleza <= 1) {
+    fortalezaBar.className = "progress-bar bg-danger";
+    fortalezaMsg.textContent = "⚠️ Contraseña débil";
+  } else if (fortaleza === 2) {
+    fortalezaBar.className = "progress-bar bg-warning";
+    fortalezaMsg.textContent = "ℹ️ Contraseña media";
+  } else {
+    fortalezaBar.className = "progress-bar bg-success";
+    fortalezaMsg.textContent = "✅ Contraseña fuerte";
+  }
+}
+
+pass1.addEventListener("input", () => {
+  evaluarFortaleza(pass1.value);
+  validarPasswords();
+});
+pass2.addEventListener("input", validarPasswords);
+
+form.addEventListener("submit", e => {
+  if (pass1.value !== pass2.value) {
+    e.preventDefault();
+    validarPasswords();
+    pass2.focus();
+  }
+});
+
+// === Modo oscuro ===
+const toggleBtn = document.getElementById("toggle-dark");
+const body = document.body;
+
+function actualizarBoton() {
+  if (body.classList.contains("dark-mode")) {
+    toggleBtn.textContent = "☀️ Modo Claro";
+    toggleBtn.classList.replace("btn-dark", "btn-warning");
+  } else {
+    toggleBtn.textContent = "🌙 Modo Oscuro";
+    toggleBtn.classList.replace("btn-warning", "btn-dark");
+  }
+}
+
+if (localStorage.getItem("dark-mode") === "enabled") {
+  body.classList.add("dark-mode");
+}
+actualizarBoton();
+
+toggleBtn.addEventListener("click", () => {
+  body.classList.toggle("dark-mode");
+  localStorage.setItem("dark-mode", body.classList.contains("dark-mode") ? "enabled" : "disabled");
+  actualizarBoton();
+});
 </script>
+
 </body>
 </html>
+

@@ -1,0 +1,66 @@
+/* Estilo principal del carrito */
+.carrito-container {
+    background: #fdfdfd;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* Título */
+.titulo-carrito {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 25px;
+    color: #2c3e50;
+}
+
+/* Imagen del producto */
+.img-producto {
+    width: 70px;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+/* Precio destacado */
+.precio {
+    font-weight: bold;
+    color: #28a745;
+    font-size: 1.1rem;
+}
+
+/* Botón Quitar */
+.btn-quitar {
+    transition: transform 0.2s ease;
+}
+
+.btn-quitar:hover {
+    transform: scale(1.1);
+}
+
+/* Sección total */
+.total {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: right;
+}
+
+/* Acciones de carrito */
+.acciones-carrito {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn-seguir, .btn-finalizar {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+/* Carrito vacío */
+.vacio {
+    font-style: italic;
+    font-size: 1.1rem;
+    padding: 20px;
+}

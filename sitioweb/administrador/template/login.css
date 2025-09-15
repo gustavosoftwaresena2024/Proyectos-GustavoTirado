@@ -111,7 +111,7 @@ body.dark-mode .alert {
 /* Botón modo oscuro */
 #toggleDark {
     border-radius: 50%;
-    width: 35px;
+    width: 10px;
     height: 35px;
     padding: 0;
     font-size: 18px;

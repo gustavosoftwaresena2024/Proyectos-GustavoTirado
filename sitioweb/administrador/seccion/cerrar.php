@@ -1,32 +1,32 @@
 <?php
-session_start();        // Inicia la sesión
-session_destroy();      // Destruye la sesión y borra variables
+// Iniciar sesión si existe
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-// También evitar que se guarde en caché
+// Destruir sesión
+session_destroy();
+
+// Evitar caché del navegador
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
-<?php if (isset($_GET['mensaje'])) { ?>
-  <?php if ($_GET['mensaje'] == 'logout') { ?>
-    <div class="alert alert-success">✅ Sesión cerrada correctamente</div>
-  <?php } elseif ($_GET['mensaje'] == 'expirado') { ?>
-    <div class="alert alert-warning">⚠️ Tu sesión ha expirado. Vuelve a iniciar sesión.</div>
-  <?php } ?>
-<?php } ?>
+header("Expires: 0");
+
+// Redirigir al login con mensaje
+header("Location: login.php?mensaje=logout");
+exit;
 
 
-// Redirige al login con mensaje de confirmación
-header("Location: ../sitioweb/administrador/login.php?mensaje=logout");
+// ✅ Eliminar todas las variables de sesión
+$_SESSION = [];
+
+// ✅ Destruir sesión
+session_destroy();
+
+// ✅ Redirigir al login
+header("Location: login.php");
 exit;
 ?>
 
-if (isset($_GET['mensaje']) && $_GET['mensaje'] == 'logout') { ?>
-    <div class="alert alert-success" role="alert">
-        ✅ Sesión cerrada correctamente
-    </div>
-Redirige al login
 
-header("Location: ../sitioweb/administrador/login.php");
-exit;
-
-
-<?php include("../template/pie.php"); ?>
