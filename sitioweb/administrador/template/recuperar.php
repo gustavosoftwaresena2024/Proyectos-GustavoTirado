@@ -22,13 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $token = bin2hex(random_bytes(32));
             $expira = date("Y-m-d H:i:s", strtotime("+1 hour"));
 
-            $updateSQL = $conexion->prepare("UPDATE usuarios 
-                                             SET token = :token, token_expira = :expira 
-                                             WHERE id = :id");
-            $updateSQL->bindParam(':token', $token);
-            $updateSQL->bindParam(':expira', $expira);
-            $updateSQL->bindParam(':id', $usuario['id']);
-            $updateSQL->execute();
+           
 
             // Enlace de recuperación
             $link = "http://localhost/sitioweb/administrador/restablecer.php?token=" . $token;

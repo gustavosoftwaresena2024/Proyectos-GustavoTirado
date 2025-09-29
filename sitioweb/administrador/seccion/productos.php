@@ -1,7 +1,12 @@
 <?php include_once("../template/cabecera.php"); ?>
-<?php 
 
+<?php 
 include("../config/bd.php"); // conexión PDO (el bd.php que ya usas)
+// Evitar volver con el botón atrás
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: 0");
 
 
 // Si no existe la sesión, redirige al login
@@ -10,36 +15,36 @@ if (!isset($_SESSION['usuario'])) {
     exit;
 }
 
-// Evitar volver con el botón atrás
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
-header("Expires: 0");
 ?>
 
 
 <?php 
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
 
-$txtID       = isset($_POST['txtID']) ? $_POST['txtID'] : "";
-$txtNombre   = isset($_POST['txtNombre']) ? $_POST['txtNombre'] : "";
-$txtPrecio   = isset($_POST['txtPrecio']) ? $_POST['txtPrecio'] : "";
-$txtContacto = isset($_POST['txtContacto']) ? $_POST['txtContacto'] : "";
-$txtImagen   = isset($_FILES['txtImagen']['name']) ? $_FILES['txtImagen']['name'] : "";
-$accion      = isset($_POST['accion']) ? $_POST['accion'] : "";
+$txtID       = $_POST['txtID']       ?? "";
+$txtNombre   = $_POST['txtNombre']   ?? "";
+$txtVendedor = $_POST['txtVendedor'] ?? "";   // nuevo
+$txtUbicacion= $_POST['txtUbicacion']?? "";   // nuevo
+$txtPrecio   = $_POST['txtPrecio']   ?? "";
+$txtContacto = $_POST['txtContacto'] ?? "";
+$txtImagen   = $_FILES['txtImagen']['name'] ?? "";
+$accion      = $_POST['accion']      ?? "";
+
 
 include("../config/bd.php");
 
 switch($accion){
-    case "Agregar":
-        $sentenciaSQL = $conexion->prepare(
-            "INSERT INTO libros (nombre, precio, contacto, imagen) VALUES (:nombre, :precio, :contacto, :imagen);"
-        );
-        $sentenciaSQL->bindParam(':nombre', $txtNombre);
-        $sentenciaSQL->bindParam(':precio', $txtPrecio);
-        $sentenciaSQL->bindParam(':contacto', $txtContacto);
+
+   case "Agregar":
+    $sentenciaSQL = $conexion->prepare(
+        "INSERT INTO libros (nombre, vendedor, ubicacion, precio, contacto, imagen) 
+         VALUES (:nombre, :vendedor, :ubicacion, :precio, :contacto, :imagen);"
+    );
+    $sentenciaSQL->bindParam(':nombre', $txtNombre);
+    $sentenciaSQL->bindParam(':vendedor', $txtVendedor);
+    $sentenciaSQL->bindParam(':ubicacion', $txtUbicacion);
+    $sentenciaSQL->bindParam(':precio', $txtPrecio);
+    $sentenciaSQL->bindParam(':contacto', $txtContacto);
+
 
         $fecha = new DateTime();
         $nombreArchivo = ($txtImagen!= "") ? $fecha->getTimestamp()."_".$_FILES["txtImagen"]["name"] : "imagen.jpg";
@@ -52,13 +57,20 @@ switch($accion){
         $sentenciaSQL->execute();
     break;
 
-    case "Modificar":
-        $sentenciaSQL = $conexion->prepare("UPDATE libros SET nombre=:nombre, precio=:precio, contacto=:contacto WHERE id=:id");
-        $sentenciaSQL->bindParam(':nombre', $txtNombre);
-        $sentenciaSQL->bindParam(':precio', $txtPrecio);
-        $sentenciaSQL->bindParam(':contacto', $txtContacto);
-        $sentenciaSQL->bindParam(':id', $txtID);
-        $sentenciaSQL->execute();
+   case "Modificar":
+    $sentenciaSQL = $conexion->prepare(
+        "UPDATE libros 
+         SET nombre=:nombre, vendedor=:vendedor, ubicacion=:ubicacion, precio=:precio, contacto=:contacto 
+         WHERE id=:id"
+    );
+    $sentenciaSQL->bindParam(':nombre', $txtNombre);
+    $sentenciaSQL->bindParam(':vendedor', $txtVendedor);
+    $sentenciaSQL->bindParam(':ubicacion', $txtUbicacion);
+    $sentenciaSQL->bindParam(':precio', $txtPrecio);
+    $sentenciaSQL->bindParam(':contacto', $txtContacto);
+    $sentenciaSQL->bindParam(':id', $txtID);
+    $sentenciaSQL->execute();
+
 
         if ($txtImagen != "") {
             $fecha = new DateTime();
@@ -88,17 +100,20 @@ switch($accion){
         header("Location: productos.php");
     break;
 
-    case "Seleccionar":
-        $sentenciaSQL = $conexion->prepare("SELECT * FROM libros WHERE id=:id");
-        $sentenciaSQL->bindParam(':id', $txtID);
-        $sentenciaSQL->execute();
-        $libro = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
+   case "Seleccionar":
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM libros WHERE id=:id");
+    $sentenciaSQL->bindParam(':id', $txtID);
+    $sentenciaSQL->execute();
+    $libro = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
 
-        $txtNombre   = $libro['nombre'];
-        $txtPrecio   = $libro['precio'];
-        $txtContacto = $libro['contacto'];
-        $txtImagen   = $libro['imagen'];
-    break;
+    $txtNombre    = $libro['nombre'];
+    $txtVendedor  = $libro['vendedor'];   // nuevo
+    $txtUbicacion = $libro['ubicacion'];  // nuevo
+    $txtPrecio    = $libro['precio'];
+    $txtContacto  = $libro['contacto'];
+    $txtImagen    = $libro['imagen'];
+break;
+
 
     case "Borrar":
         $sentenciaSQL = $conexion->prepare("SELECT imagen FROM libros WHERE id=:id");
@@ -147,6 +162,21 @@ $listaLibros = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                 </div>
 
                 <div class="form-group">
+    <label for="txtVendedor">Nombre del vendedor:</label>
+    <input type="text" required class="form-control" 
+           value="<?php echo htmlspecialchars($txtVendedor); ?>" 
+           name="txtVendedor" id="txtVendedor">
+</div>
+
+<div class="form-group">
+    <label for="txtUbicacion">Ubicación del vendedor:</label>
+    <input type="text" required class="form-control" 
+           value="<?php echo htmlspecialchars($txtUbicacion); ?>" 
+           name="txtUbicacion" id="txtUbicacion">
+</div>
+
+
+                <div class="form-group">
                     <label for="txtImagen">Imagen:</label>
                     <div class="d-flex align-items-center">
                         <input type="file" class="form-control mr-2" name="txtImagen" id="txtImagen" accept="image/*" onchange="mostrarPreview(event)">
@@ -166,27 +196,33 @@ $listaLibros = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
 <div class="col-md-7">
     <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Contacto</th>
-                <th>Imagen</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach($listaLibros as $libro) { ?>
-            <tr>
-                <td><?php echo htmlspecialchars($libro['id']); ?></td>
-                <td><?php echo htmlspecialchars($libro['nombre']); ?></td>
-                <td>$<?php echo number_format($libro['precio'], 2); ?></td>
-                <td><?php echo htmlspecialchars($libro['contacto']); ?></td>
-                <td>
-                    <img class="img-thumbnail rounded" 
-                         src="../../img/<?php echo htmlspecialchars($libro['imagen']); ?>" 
-                         width="80">
+
+       <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Vendedor</th>
+        <th>Ubicación</th>
+        <th>Precio</th>
+        <th>Contacto</th>
+        <th>Imagen</th>
+        <th>Acciones</th>
+    </tr>
+</thead>
+<tbody>
+    <?php foreach($listaLibros as $libro) { ?>
+    <tr>
+        <td><?php echo htmlspecialchars($libro['id']); ?></td>
+        <td><?php echo htmlspecialchars($libro['nombre']); ?></td>
+        <td><?php echo htmlspecialchars($libro['vendedor']); ?></td>
+        <td><?php echo htmlspecialchars($libro['ubicacion']); ?></td>
+        <td>$<?php echo number_format($libro['precio'], 2); ?></td>
+        <td><?php echo htmlspecialchars($libro['contacto']); ?></td>
+        <td><img class="img-thumbnail rounded" 
+                 src="../../img/<?php echo htmlspecialchars($libro['imagen']); ?>" 
+                 width="80"></td>
+
+
                          <td style="display:flex; gap:5px; flex-wrap:wrap;">
     <form method="post">
         <input type="hidden" name="txtID" value="<?php echo $libro['id']; ?>"/>
@@ -201,20 +237,22 @@ $listaLibros = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                     </form>
                 </td>
                 <td>
-    <!-- Botón Agregar al carrito -->
-<form method="post" action="../template/carrito.php" style="display:inline-block;">
+  <form method="post" action="../template/carrito.php" style="display:inline-block;">
     <input type="hidden" name="idProducto" value="<?php echo $libro['id']; ?>"/>
     <input type="hidden" name="nombre" value="<?php echo htmlspecialchars($libro['nombre']); ?>"/>
     <input type="hidden" name="precio" value="<?php echo $libro['precio']; ?>"/>
     <input type="hidden" name="imagen" value="<?php echo htmlspecialchars($libro['imagen']); ?>"/>
+    <input type="hidden" name="vendedor" value="<?php echo htmlspecialchars($libro['vendedor']); ?>"/>   <!-- nuevo -->
+    <input type="hidden" name="ubicacion" value="<?php echo htmlspecialchars($libro['ubicacion']); ?>"/> <!-- nuevo -->
 
-    <!-- Nuevo campo para cantidad -->
-    <input type="number" name="cantidad" value="1" min="1" class="form-control mb-2" style="width:80px; display:inline-block;"/>
+    <!-- Campo cantidad -->
+    <input type="number" name="cantidad" value="0" min="1" class="form-control mb-2" style="width:80px; display:inline-block;"/>
 
     <button type="submit" name="accion" value="Agregar" class="btn btn-success">
         🛒 Agregar
     </button>
 </form>
+
 
 </td>
 

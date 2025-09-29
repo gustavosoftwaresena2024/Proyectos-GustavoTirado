@@ -1,6 +1,6 @@
 <?php 
-include("template/cabecera.php"); 
-include("administrador/config/bd.php");
+include(__DIR__ . "/../../template/cabecera.php"); 
+include(__DIR__ . "/../../config/bd.php");
 
 $sentenciaSQL = $conexion->prepare("SELECT * FROM libros");
 $sentenciaSQL->execute();
@@ -45,6 +45,8 @@ $listaLibros = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 
-<?php include("template/pie.php"); ?>
+<?php include(__DIR__ . "/../../template/pie.php"); ?>
+
+
 
 

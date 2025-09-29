@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['nombreUsuario'] = "Administrador";
 
         // 👉 Redirige al panel principal
-        header('Location: http://localhost:3000/administrador/template/panel.php');
+        header('Location: http://localhost/sitioweb/administrador/template/panel.php');
         exit;
     } else {
         $mensaje = "❌ Usuario o contraseña incorrectos.";

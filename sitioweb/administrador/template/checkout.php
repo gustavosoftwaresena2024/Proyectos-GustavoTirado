@@ -3,8 +3,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Incluir cabecera
-include(__DIR__ . "/cabecera.php");
+include(__DIR__ . "/cabecera.php"); // si cabecera.php está en la misma carpeta "template"
+
 include("../config/bd.php"); // Conexión PDO
 
 // Verificar que el usuario esté logueado
@@ -80,12 +80,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="container my-5">
     <h2 class="mb-4">✅ Finalizar Compra</h2>
 
-    <?php if (!empty($mensaje)): ?>
-        <div class="alert alert-info text-center"><?= htmlspecialchars($mensaje) ?></div>
-        <div class="text-center mt-3">
-            <a href="productos.php" class="btn btn-primary">⬅ Seguir comprando</a>
-        </div>
-    <?php endif; ?>
+   <?php if (!empty($mensaje)): ?>
+    <div class="alert alert-info text-center"><?= htmlspecialchars($mensaje) ?></div>
+    <div class="text-center mt-3">
+        <a href="/sitioweb/administrador/seccion/productos.php" class="btn btn-primary">
+            ⬅ Seguir comprando
+        </a>
+    </div>
+<?php endif; ?>
+
 
     <?php if (!empty($carrito) && empty($mensaje)): ?>
         <table class="table table-bordered text-center align-middle">
@@ -147,7 +150,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="alert alert-warning text-center">
             Tu carrito está vacío. 
         </div>
-        <a href="productos.php" class="btn btn-primary">⬅ Volver a productos</a>
+       <a href="/sitioweb/administrador/seccion/productos.php" class="btn btn-primary">
+    ⬅ Volver a productos
+</a>
+
     <?php endif; ?>
 </div>
 

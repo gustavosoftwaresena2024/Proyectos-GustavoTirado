@@ -3,6 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+
 if (!isset($_SESSION['usuario'])){
   header("Location:../index.php");
 }else{
@@ -17,6 +18,9 @@ if (!isset($_SESSION['usuario'])){
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Administrador del sitio</title>
 <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -45,12 +49,11 @@ if (!isset($_SESSION['usuario'])){
     <div class="nav navbar-nav">
     <a class="nav-item nav-link active" href="http://localhost/sitioweb/administrador/index.php">Administrador del sitio  <span class="sr-only"></span> </a>
    
-    <a class="nav-item nav-link " href="#"></a>
 
     <a class="nav-item nav-link" href="http://localhost/sitioweb/productos.php">Libros</a>
-    <a class="nav-item nav-link" href="http://localhost/sitioweb/index.php">Cerrar</a>
+    <a class="nav-item nav-link" href="http://localhost/sitioweb/">Cerrar</a>
     
-    <a class="nav-item nav-link" href="<?php echo $url;?>">Ver web de Inkverso</a>
+    <a class="nav-item nav-link" href="<?php echo $url;?>">Web de Inkverso</a>
      <a class="nav-item nav-link" href="http://localhost/sitioweb/administrador/template/carrito.php">🛒Carrito de compras</a>
 </div>
 </nav>

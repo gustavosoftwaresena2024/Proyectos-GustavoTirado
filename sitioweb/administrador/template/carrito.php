@@ -1,8 +1,10 @@
 <?php
-// Iniciar sesión si no está iniciada
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// Incluir cabecera y conexión a BD
+
 
 // Inicializar carrito si no existe
 if (!isset($_SESSION['carrito'])) {
@@ -15,34 +17,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion'])) {
 
     switch ($accion) {
         case "Agregar":
-            $id     = $_POST['idProducto'];
-            $nombre = $_POST['nombre'];
-            $precio = floatval($_POST['precio']);
-            $imagen = $_POST['imagen'];
-             $cantidad = isset($_POST['cantidad']) ? (int)$_POST['cantidad'] : 1;
+            $id       = $_POST['idProducto'];
+            $nombre   = $_POST['nombre'];
+            $precio   = floatval($_POST['precio']);
+            $imagen   = $_POST['imagen'];
+            $cantidad = isset($_POST['cantidad']) ? (int)$_POST['cantidad'] : 1;
 
-            $existe = false;
+            $encontrado = false;
             foreach ($_SESSION['carrito'] as &$item) {
                 if ($item['id'] == $id) {
-                    $item['cantidad']++;
+                    $item['cantidad'] += $cantidad;
                     $item['subtotal'] = $item['cantidad'] * $item['precio'];
-                    $existe = true;
+                    $encontrado = true;
                     break;
                 }
             }
+            unset($item);
 
-            if (!$existe) {
-                $_SESSION['carrito'][] = [
-                    'id'       => $id,
-                    'nombre'   => $nombre,
-                    'precio'   => $precio,
-                    'cantidad' => 0,
-                    'subtotal' => $precio,
-                    'imagen'   => $imagen
-                ];
-            }
-        
-        // Si el producto ya está en el carrito, sumamos cantidad
+           if (!$encontrado) {
+    $_SESSION['carrito'][] = [
+        'id'        => $id,
+        'nombre'    => $nombre,
+        'precio'    => $precio,
+        'imagen'    => $imagen,
+        'vendedor'  => $_POST['vendedor'],   // nuevo
+        'ubicacion' => $_POST['ubicacion'], // nuevo
+        'cantidad'  => $cantidad,
+        'subtotal'  => $cantidad * $precio
+    ];
+}
+
+
+        break;
+
+      case "Agregar":
+    $id       = $_POST['idProducto'];
+    $nombre   = $_POST['nombre'];
+    $precio   = floatval($_POST['precio']);
+    $imagen   = $_POST['imagen'];
+    $vendedor = $_POST['vendedor'];
+    $ubicacion= $_POST['ubicacion'];
+    $cantidad = isset($_POST['cantidad']) ? (int)$_POST['cantidad'] : 1;
+
     $encontrado = false;
     foreach ($_SESSION['carrito'] as &$item) {
         if ($item['id'] == $id) {
@@ -52,25 +68,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion'])) {
             break;
         }
     }
-    unset($item); // liberar referencia
+    unset($item);
 
-    // Si no estaba en el carrito, lo agregamos
     if (!$encontrado) {
         $_SESSION['carrito'][] = [
-            'id'       => $id,
-            'nombre'   => $nombre,
-            'precio'   => $precio,
-            'imagen'   => $imagen,
-            'cantidad' => $cantidad,
-            'subtotal' => $cantidad * $precio
+            'id'        => $id,
+            'nombre'    => $nombre,
+            'precio'    => $precio,
+            'imagen'    => $imagen,
+            'vendedor'  => $vendedor,
+            'ubicacion' => $ubicacion,
+            'cantidad'  => $cantidad,
+            'subtotal'  => $cantidad * $precio
         ];
     }
+break;
+
+
 
         case "Eliminar":
             $index = $_POST['index'];
             if (isset($_SESSION['carrito'][$index])) {
                 unset($_SESSION['carrito'][$index]);
-                $_SESSION['carrito'] = array_values($_SESSION['carrito']); // reindexar
+                $_SESSION['carrito'] = array_values($_SESSION['carrito']);
             }
         break;
 
@@ -79,58 +99,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion'])) {
         break;
     }
 
-    // Redirigir para evitar reenvío de formularios
     header("Location: carrito.php");
     exit;
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Carrito de Compras</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-</head>
-<body class="bg-light">
-
 <div class="container my-5">
     <h2 class="mb-4">🛒 Carrito de Compras</h2>
+    <!-- Bootstrap css -->
+  <link rel="stylesheet" href="./login.css"> 
+ <link 
+    rel="stylesheet" 
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+    integrity="sha384-ggOyR0ixcbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
+    crossorigin="anonymous">
+    <link  rel="stylesheet" href="./css/bootstrap.min.css"/>
+     <!-- Bootstrap -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+
+    <!-- Tus estilos personalizados -->
+  
+    <link rel="stylesheet" href="../seccion/css/bootstrap.min.css">
 
     <?php if (!empty($_SESSION['carrito'])): ?>
-        <table class="table table-bordered text-center align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th>Imagen</th>
-                    <th>Nombre</th>
-                    <th>Precio</th>
-                    <th>Cantidad</th>
-                    <th>Subtotal</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php $total = 0; ?>
-                <?php foreach ($_SESSION['carrito'] as $index => $item): ?>
-                    <?php $total += $item['subtotal']; ?>
-                    <tr>
-                        <td><img src="../../img/<?php echo htmlspecialchars($item['imagen']); ?>" width="60"></td>
-                        <td><?php echo htmlspecialchars($item['nombre']); ?></td>
-                        <td>$<?php echo number_format($item['precio'], 2); ?></td>
-                        <td><?php echo $item['cantidad']; ?></td>
-                        <td class="text-success fw-bold">$<?php echo number_format($item['subtotal'], 2); ?></td>
-                        <td>
-                            <form method="post" action="carrito.php" style="display:inline-block;">
-                                <input type="hidden" name="index" value="<?php echo $index; ?>">
-                                <button type="submit" name="accion" value="Eliminar" class="btn btn-danger btn-sm">❌ Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
 
-        <div class="alert alert-success fs-5">
+
+       <table class="table table-bordered text-center align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Vendedor</th>
+            <th>Ubicación</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <?php $total = 0; ?>
+        <?php foreach ($_SESSION['carrito'] as $index => $item): ?>
+            <?php $total += $item['subtotal']; ?>
+            <tr>
+                <td><img src="../../img/<?php echo htmlspecialchars($item['imagen']); ?>" width="60"></td>
+                <td><?php echo htmlspecialchars($item['nombre']); ?></td>
+                <td><?php echo htmlspecialchars($item['vendedor']); ?></td>
+                <td><?php echo htmlspecialchars($item['ubicacion']); ?></td>
+                <td>$<?php echo number_format($item['precio'], 2); ?></td>
+                <td><?php echo $item['cantidad']; ?></td>
+                <td class="text-success fw-bold">$<?php echo number_format($item['subtotal'], 2); ?></td>
+                <td>
+                    <form method="post" action="carrito.php" style="display:inline-block;">
+                        <input type="hidden" name="index" value="<?php echo $index; ?>">
+                        <button type="submit" name="accion" value="Eliminar" class="btn btn-danger btn-sm">❌ Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+
+
+
+
+<div class="alert alert-success fs-5">
             <strong>Total:</strong> $<?php echo number_format($total, 2); ?>
         </div>
 
@@ -151,8 +186,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion'])) {
     <?php endif; ?>
 </div>
 
-</body>
-</html>
+<?php include(__DIR__ . "/../../template/pie.php"); ?>
+
 
 
 

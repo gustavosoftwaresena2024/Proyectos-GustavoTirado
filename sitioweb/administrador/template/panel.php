@@ -1,5 +1,19 @@
 <?php
 session_start();
+// Evitar caché del navegador
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
+
+// Verificar sesión
+if (!isset($_SESSION['usuario']) || $_SESSION['usuario'] !== "OK") {
+    header("Location: login.php");
+    exit;
+}
+?>
+<?php 
+
 include("../config/bd.php");
 
 // ✅ Inicializar variables para evitar warnings
@@ -9,8 +23,6 @@ $totalVentas = 0;
 $totalVisitas = 0;
 $lugares = [0];
 $ultimosCompradores = [0];
-
-
 
 try {
     // Total compradores (sin anónimos)
@@ -61,50 +73,59 @@ try {
     $_SESSION['error'] = "Error en consultas: " . $e->getMessage();
 }
 ?>
-?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>🔑 Panel del administrador</title>
+
   <link rel="stylesheet" href="../seccion/css/bootstrap.min.css"> 
   <link rel="stylesheet" href="../template/login.css"> 
-  <link rel="stylesheet" href="../template/barra.css"> 
+  <title>🔑 Panel del administrador</title>
 </head>
 <body></body>
 
-<?php include("../template/cabecera.php"); ?>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="panel.php">📊 Panel</a>
+    <!-- Marca del panel -->
+    <a class="navbar-brand fw-bold" href="panel.php">📊 Panel</a>
+
+    <!-- Botón hamburguesa para móviles -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
+    <!-- Contenido del menú -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" href="../inicio.php">🏠 Inicio</a>
+          <a class="nav-link" href="http://localhost/sitioweb/index.php">🏠 Inicio</a>
         </li>
       </ul>
-      <div class="d-flex align-items-center">
+
+      <!-- Botones a la derecha -->
+      <div class="d-flex align-items-center gap-2">
         <!-- Botón modo oscuro -->
-         <div class="container my-3 text-end">
-    <button id="toggle-dark" class="btn btn-dark">🌙 Modo Oscuro</button>
-</div>
+        <button id="toggle-dark" class="btn btn-dark">🌙 Modo Oscuro</button>
 
         <!-- Botón restaurar panel -->
-        <button id="restorePanel" class="btn btn-outline-warning btn-sm me-2">🔄 Restaurar</button>
+        <button id="restorePanel" class="btn btn-outline-warning btn-sm">🔄 Restaurar</button>
 
         <!-- Botón cerrar sesión -->
-        <a href="../index.php" class="btn btn-outline-danger btn-sm">🚪 Cerrar sesión</a>
+        <a href="http://localhost/sitioweb/administrador/index.php" class="btn btn-outline-danger btn-sm">🚪 Cerrar sesión</a>
       </div>
     </div>
   </div>
 </nav>
 
+<!-- 🔽 Esto evita que el contenido quede escondido debajo del menú -->
+<div class="container-fluid mt-5">
 
-<div class="container mt-4">
+
+
+<div class="container-fluid mt-4">
     <h2 class="text-center mb-4">📊 Panel de Control</h2>
     <div class="row">
         <!-- Total Compradores -->
@@ -166,42 +187,42 @@ try {
     </div>
 
     <!-- Últimos compradores -->
-    <div class="card mt-4">
-        <div class="card-header">🛒 Últimos compradores</div>
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Comprador</th>
-                        <th>Libros</th>
-                        <th>Total</th>
-                        <th></th>
-                        <th></th>
-                        <th>Lugar</th>
-                        <th>Fecha</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($ultimosCompradores)): ?>
-                        <?php foreach ($ultimosCompradores as $compra): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($compra['comprador']) ?></td>
-                                <td><?= $compra['cantidad_libros'] ?></td>
-                                <td>$<?= number_format($compra['total'], 2) ?></td>
-                                <td><?= htmlspecialchars($compra['lugar']) ?></td>
-                                <td><?= htmlspecialchars($compra['ciudad']) ?></td>
-                                <td><?= htmlspecialchars($compra['direccion']) ?></td>
-                                <td><?= $compra['fecha'] ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr><td colspan="7" class="text-center">No hay compras registradas</td></tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
+  <div class="card mt-4">
+    <div class="card-header bg-danger text-white">🛒 Últimos compradores</div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-danger text-white">
+            <thead class="table-dark">
+                <tr>
+                    <th>Comprador</th>
+                    <th>Libros</th>
+                    <th>Total</th>
+                    <th></th>
+                    <th></th>
+                    <th>Lugar</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($ultimosCompradores)): ?>
+                    <?php foreach ($ultimosCompradores as $compra): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($compra['comprador']) ?></td>
+                            <td><?= $compra['cantidad_libros'] ?></td>
+                            <td>$<?= number_format($compra['total'], 2) ?></td>
+                            <td><?= htmlspecialchars($compra['lugar']) ?></td>
+                            <td><?= htmlspecialchars($compra['ciudad']) ?></td>
+                            <td><?= htmlspecialchars($compra['direccion']) ?></td>
+                            <td><?= $compra['fecha'] ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr><td colspan="7" class="text-center">No hay compras registradas</td></tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
 </div>
+
 
 
 

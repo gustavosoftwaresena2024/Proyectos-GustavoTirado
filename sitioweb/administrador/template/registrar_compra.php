@@ -5,6 +5,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Conexión a la BD con ruta correcta
 include(__DIR__ . "/../config/bd.php");
+include(__DIR__ . "/cabecera.php"); // si cabecera.php está en la misma carpeta "template"
+include(__DIR__ . "/pie.php");      // lo mismo
+
 
 // Datos de la compra desde checkout.php
 $comprador = $_POST['nombre'] ?? "Cliente Anónimo";

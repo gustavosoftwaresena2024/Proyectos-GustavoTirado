@@ -2,11 +2,17 @@
 session_start();
 include('template/cabecera.php'); 
 
+// Evitar caché del navegador
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 // Validación de sesión
 if (!isset($_SESSION['usuario']) || $_SESSION['usuario'] !== "OK") {
     header("Location: login.php?mensaje=expirado");
     exit;
 }
+
 
 // Recuperar nombre del usuario si existe
 $nombredelusuario = isset($_SESSION['nombreUsuario']) ? $_SESSION['nombreUsuario'] : "Usuario";
