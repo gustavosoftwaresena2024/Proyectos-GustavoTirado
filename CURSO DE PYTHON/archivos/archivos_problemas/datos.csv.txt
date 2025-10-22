@@ -1,0 +1,9 @@
+"nombre","apellido","edad"
+"Gustavo","Molina",25
+"esteban","demencial",42
+"esteban","demencial",42
+"camila","dalto",24
+"nicolas","gutierrez",37
+"Vicente","Fernandez",88
+"Vicente","Fernandez",88
+"Antonio","Aguilar",78

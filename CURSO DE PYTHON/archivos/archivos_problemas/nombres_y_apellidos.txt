@@ -1,0 +1,17 @@
+Los datos son:
+
+Nombre: Gustavo
+Apellido: Molina
+----------------
+Nombre: Matias
+Apellido: Gutierrez
+----------------
+Nombre: Camila
+Apellido: Fernandez
+----------------
+Nombre: Pedro
+Apellido: Aguilar
+----------------
+Nombre: Roberto
+Apellido: Ospina
+----------------

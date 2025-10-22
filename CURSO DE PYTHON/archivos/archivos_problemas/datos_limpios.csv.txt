@@ -1,0 +1,7 @@
+,nombre,apellido,edad
+0,Gustavo,Genio,25
+1,esteban,demencial,42
+3,camila,dalto,24
+4,nicolas,gutierrez,37
+5,Vicente,Fernandez,88
+7,Antonio,Aguilar,78
